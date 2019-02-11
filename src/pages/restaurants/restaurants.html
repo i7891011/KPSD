@@ -1,0 +1,60 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title *ngIf="!isSearchbarOpened">
+      Restaurants
+    </ion-title>
+    <ion-searchbar *ngIf="isSearchbarOpened" showCancelButton="true" (search)="onSearch($event)" (ionCancel)="isSearchbarOpened=false"></ion-searchbar>
+    <ion-buttons end>
+      <button ion-button icon-only *ngIf="!isSearchbarOpened" (click)="isSearchbarOpened=true">
+        <ion-icon name="search"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content padding id="page3">
+  <ion-list id="restaurants-list2">
+    <ion-item color="none" id="restaurants-list-item5">
+      <ion-thumbnail item-left>
+        <img src="assets/img/U732p2CPTnGk8gBUfPOZ_thumbnail.jpg" />
+      </ion-thumbnail>
+      <h2>
+        ร้านไก่ทอดเดชา
+      </h2>
+    </ion-item>
+    <ion-item color="none" id="restaurants-list-item6">
+      <ion-thumbnail item-left>
+        <img src="assets/img/n8cWcnpuQlSTPipuupLl_thumbnail.jpg" />
+      </ion-thumbnail>
+      <h2>
+        ร้านข้าวผัดตามสั่ง
+      </h2>
+    </ion-item>
+    <ion-item color="none" id="restaurants-list-item7">
+      <ion-thumbnail item-left>
+        <img src="assets/img/SKnsyKztRCe0axYcwSqj_thumbnail.jpg" />
+      </ion-thumbnail>
+      <h2>
+        ร้านกระเพาถาด
+      </h2>
+    </ion-item>
+    <ion-item color="none" id="restaurants-list-item8">
+      <ion-thumbnail item-left>
+        <img src="assets/img/1jjATOptSbytveY6mtbG_thumbnail.jpg" />
+      </ion-thumbnail>
+      <h2>
+        ร้านข้าวมันไก่
+      </h2>
+    </ion-item>
+    <ion-item color="none" id="restaurants-list-item9">
+      <ion-thumbnail item-left>
+        <img src="assets/img/aJix6DKyRsqQnNzJjdGg_thumbnail.jpg" />
+      </ion-thumbnail>
+      <h2>
+        ร้านชานมมุก
+      </h2>
+    </ion-item>
+  </ion-list>
+</ion-content>

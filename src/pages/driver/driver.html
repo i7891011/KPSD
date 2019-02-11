@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      Driver
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding id="page5">
+  <form id="driver-form3">
+    <ion-item id="driver-toggle3" (click)="updatedriverStatus()">
+      <ion-label>
+        Working1
+      </ion-label>
+      <ion-toggle color="balanced" checked="false"></ion-toggle>
+    </ion-item>
+  </form>
+  <button id="driver-button1" ion-button color="balanced"  (click)="initMap()">
+    <ion-icon name="locate"></ion-icon>
+    Update Location
+  </button>
+  <div #map id="map"></div>
+</ion-content>
