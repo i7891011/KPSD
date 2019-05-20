@@ -1,0 +1,36 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>แก้ไขชื่อ</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <h2 margin-bottom>เปลี่ยนชื่อใหม่</h2>
+
+  <form (ngSubmit)="doName()" #f="ngForm">
+    <div id="user-data" ngModelGroup="userData">
+      <div class="form-group">
+        <ion-item>
+          <ion-label floating>กรุณาใส่ชื่อ</ion-label>
+          <ion-input type="text" id="name" class="form-control" name="name" ngModel required #name="ngModel"
+            pattern="^[a-zA-Z]{3,50}$"></ion-input><br>
+        </ion-item>
+        <span padding-left *ngIf="(!name.valid && name.touched)">กรุณาใส่ชื่อให้ถูกต้อง มีความยาวตั้งแต่ 3 ตัวอักษรขึ้นไปและต้องเป็นตัวอักษรภาษาอังกฤษ</span>
+      </div>
+      <div class="form-group">
+        <ion-item class="pass">
+          <ion-label floating>กรุณาใส่รหัสผ่านปัจจุบัน</ion-label>
+          <ion-input type="password" id="password" class="form-control" name="password" required ngModel
+            #password="ngModel"></ion-input>
+        </ion-item>
+      </div>
+
+    </div>
+    <button ion-button block margin-top type="submit" [disabled]="!f.valid">ยืนยันการเปลี่ยนชื่อ</button>
+  </form>
+
+</ion-content>

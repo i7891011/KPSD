@@ -2,8 +2,7 @@ import { Component,ViewChild,ElementRef } from '@angular/core';
 import { NavController, Modal } from 'ionic-angular';
 import { IonicPage } from 'ionic-angular';
 
-//firebase
-import { AngularFireDatabase } from 'angularfire2/database';
+
 /* to get currentlocation */
 import { Geolocation } from '@ionic-native/geolocation';
 
@@ -24,18 +23,24 @@ export class DriverPage {
   map: any;
   marker:any;
   location:any;
+  curlat:any;
+  curlng:any;
+  origin:any;
+  
+  //destination:any;
   directionsService = new google.maps.DirectionsService;
   directionsDisplay = new google.maps.DirectionsRenderer;
 
-  constructor(public navCtrl: NavController,private geolocation:Geolocation,private modal: ModalController
-    ,private fdb: AngularFireDatabase) {
-      this.fdb.list("/Driver/driverID/").valueChanges().subscribe(_data =>{
-        this.arrData = _data;
-
-        console.log(this.arrData)
-      });
+  destination = {
+    lat:13.851070,
+    lng:100.577713,
   }
+  driverID= '2';
+  
+  constructor(public navCtrl: NavController,private geolocation:Geolocation,private modal: ModalController) {}
 
+  
+  
   ionViewDidLoad(){
     this.initMap();
     //get user location
@@ -45,8 +50,6 @@ export class DriverPage {
   }
 
   initMap() {
-    //new update driver location
-    this.updateDriverlocation();
     //get current position lat=resp.coords.latitude,lng=resp.coords.longitude
     this.geolocation.getCurrentPosition().then((resp)=>{
       let pos = {
@@ -63,10 +66,12 @@ export class DriverPage {
         title: 'I am here!'
       });
       this.location = pos
+      this.curlat=resp.coords.latitude;
+      this.curlng=resp.coords.longitude;
     }).catch((error)=>{console.log('Error getting location',error);
     
     });
-
+    
     console.log(this.location);
     //location 
     this.directionsDisplay.setMap(this.map);
@@ -97,23 +102,47 @@ export class DriverPage {
     });
 
   }
-
   updateDriverlocation() {
+    
     //update current location
-    this.fdb.list("/Driver/driverID/").push(this.location);
+    this.calculateAndDisplayRoute();
+    var curDriLoc = {
+      driverID:this.driverID,
+      lat:this.curlat,
+      lng:this.curlng
+    };
+    //this.firedri.child(this.driverID).update(this.location);
   }
-  /*calculateAndDisplayRoute() {
+  calculateAndDisplayRoute() {
     this.directionsService.route({
-      origin: this.start,
-      destination: this.end,
+      origin: this.location,
+      destination: this.destination,
       travelMode: 'DRIVING'
     }, (response, status) => {
       if (status === 'OK') {
-        this.directionsDisplay.setDirections(response);
+        //this.directionsDisplay.setDirections(response);
+        //console.log(response);
+        console.log(response.routes[0].legs[0].distance.value);
       } else {
         window.alert('Directions request failed due to ' + status);
       }
     });
-  }*/
+  }
+
+  //calculate the distance between origin and destination poins using google metrix distance apis
+  calDistance() {
+    //create request
+    var req = {
+      origin: this.origin,
+      destination: this.destination,
+      travelMode: google.maps.TravelMode.DRIVING,
+      unitSystem: google.maps.UnitSystem.METRIC
+    }
+  }
+
+  //find driver
+  findDriver() {
+    
+  }
   
 }

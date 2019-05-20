@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController,App } from 'ionic-angular';
+import { MenuPage } from '../menu/menu';
 
 @Component({
   selector: 'page-my-profile',
@@ -7,7 +8,12 @@ import { NavController } from 'ionic-angular';
 })
 export class MyProfilePage {
 
-  constructor(public navCtrl: NavController) {
+  constructor(public navCtrl: NavController, private appCtrl: App) {
+  }
+
+  logout() {
+    localStorage.clear();
+    setTimeout(() => this.appCtrl.getRootNav().setRoot(MenuPage), 1000);
   }
   
 }

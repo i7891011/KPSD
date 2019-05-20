@@ -1,0 +1,46 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>แก้ไขข้อมูลบัญชี</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+
+  <ion-list>
+    <ion-list-header no-margin class="listheader">
+      ตั้งค่าบัญชี
+    </ion-list-header>
+    <ion-item>
+      <ion-row>
+        <ion-col (click)="editName()">
+          ชื่อผู้ใช้ {{ userInfo.name }}
+        </ion-col>
+      </ion-row>
+    </ion-item>
+    <ion-item>
+      <ion-row>
+        <ion-col>
+          E-mail {{ userInfo.email }}
+        </ion-col>
+      </ion-row>
+    </ion-item>
+    <ion-item>
+      <ion-row>
+        <ion-col (click)="editAddress()">
+          เปลี่ยนที่อยู่
+        </ion-col>
+      </ion-row>
+    </ion-item>
+    <ion-item>
+      <ion-row>
+        <ion-col (click)="editPassword()">
+          เปลี่ยนรหัสผ่าน
+        </ion-col>
+      </ion-row>
+    </ion-item>
+  </ion-list>
+
+</ion-content>

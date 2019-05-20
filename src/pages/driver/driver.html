@@ -10,15 +10,15 @@
 </ion-header>
 <ion-content padding id="page5">
   <form id="driver-form3">
-    <ion-item id="driver-toggle3" (click)="updatedriverStatus()">
+    <ion-item id="driver-toggle3" >
       <ion-label>
         Working1
       </ion-label>
-      <ion-toggle color="balanced" checked="false"></ion-toggle>
+      <ion-toggle color="balanced" checked="false"  (ionChange)="pushDriverlocation($event)"></ion-toggle>
     </ion-item>
   </form>
-  <button id="driver-button1" ion-button color="balanced"  (click)="initMap()">
-    <ion-icon name="locate"></ion-icon>
+  <button id="driver-button1" ion-button color="balanced"  (click)="updateDriverlocation()">
+  <ion-icon name="locate"></ion-icon>
     Update Location
   </button>
   <div #map id="map"></div>

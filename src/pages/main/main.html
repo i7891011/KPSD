@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      KU Delivery
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <h2>ยินดีต้อนรับคุณ{{ user.userInfo.name }} สู่ KU Food Delivery</h2><br>
+
+  หิวงั้นหรอลองหาร้านอาหารดูสิ
+  <button ion-button color="primary" block (click)="doFoodStore()">ค้นหาร้านอาหาร</button>
+
+  <button ion-button color="primary" block margin-top (click)="doLogout()">Logout</button>
+</ion-content>
