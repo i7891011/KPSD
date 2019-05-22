@@ -38,6 +38,7 @@ export class CustomerprofilePage {
   }
 
   ionViewWillEnter() {
+    console.log('ionViewDidLoad customerProfilePage');
     this.userInfo = JSON.parse(localStorage.getItem('userInfo'));
     this.cartLength = this.cartService.getCartLength();
   }

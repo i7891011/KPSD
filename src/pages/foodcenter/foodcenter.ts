@@ -23,15 +23,32 @@ export class FoodcenterPage {
   response: any;
   cartLength = 0;
   restaurantNum = 0;
-
+  userInfo:any;
   constructor(public navCtrl: NavController, public navParams: NavParams, public inAppService: AuthService, public cartService: CartService) {
     this.searchControl = new FormControl();
   }
 
   ionViewDidLoad() {
+    console.log('FoodCenter :'+localStorage.getItem('FCMToken'));
+    this.userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    if(this.userInfo!=null){
+      this.saveTokenToBackend(localStorage.getItem('FCMToken'));
+    }
     console.log('ionViewDidLoad FoodcenterPage');
+    //console.log(localStorage.getItem('FCMToken'));
 
-
+  }
+  async saveTokenToBackend(token) {
+    let userID = this.userInfo.user.id;
+    //console.log(userID);
+    let body = { 
+      id: userID,
+      fcmToken: token
+    }
+    //console.log(body);
+    await this.inAppService.apiPatchUpdateUserFCM('/user',body).then((result)=>{
+      return result;
+    })
   }
 
   ionViewWillEnter() {

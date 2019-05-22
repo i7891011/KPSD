@@ -5,7 +5,6 @@ import { HistoryPage } from '../history/history';
 import { CustomerprofilePage } from '../customerprofile/customerprofile';
 import { CustomerorderPage } from '../customerorder/customerorder';
 
-
 @IonicPage()
 @Component({
   selector: 'page-customertabs',

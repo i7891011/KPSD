@@ -99,15 +99,15 @@ export class AuthService {
     })
   }
   
-  async apiSyncUserType(){
+  apiSyncUserType(){
     var header = new Headers;
     var accessToken = localStorage.getItem('userToken');
     var userInfo = JSON.parse(localStorage.getItem('userInfo'));
-    var userId = userInfo.id;
+    var userId = userInfo.user.id;
     console.log('User ID : '+userId);
     header.append('Content-Type','application/json');
     header.append('token',accessToken);
-    return await new Promise((resolve) => {
+    return new Promise((resolve) => {
       this.http.get(this.apiDriverUrl + '/user/'+userId, { headers: header }).map(res => res.json()).subscribe(data => {
         localStorage.setItem('userType', JSON.stringify(data.userType));
         console.log('UserType auth: '+data.userType);

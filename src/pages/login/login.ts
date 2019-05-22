@@ -28,9 +28,9 @@ export class LoginPage {
 
     this.loginService.postData('oauth/token', user).then((result) => {
       this.response = result;
-      console.log(result);
+      //console.log(result);
       this.userInfo = JSON.parse(localStorage.getItem('userInfo'));
-      console.log(this.userInfo);
+      //console.log(this.userInfo);
       if (this.response.message == 'success') {
         this.navCtrl.setRoot(CustomertabsPage);
       }      

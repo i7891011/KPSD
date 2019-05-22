@@ -1,8 +1,7 @@
 import { Component,ViewChild,ElementRef } from '@angular/core';
 import { NavController, Modal } from 'ionic-angular';
 import { IonicPage } from 'ionic-angular';
-
-
+import { AuthService } from '../../config/authservice';
 /* to get currentlocation */
 import { Geolocation } from '@ionic-native/geolocation';
 
@@ -26,7 +25,7 @@ export class DriverPage {
   curlat:any;
   curlng:any;
   origin:any;
-  
+  userInfo:any;
   //destination:any;
   directionsService = new google.maps.DirectionsService;
   directionsDisplay = new google.maps.DirectionsRenderer;
@@ -36,15 +35,32 @@ export class DriverPage {
     lng:100.577713,
   }
   driverID= '2';
-  
-  constructor(public navCtrl: NavController,private geolocation:Geolocation,private modal: ModalController) {}
+  constructor(public navCtrl: NavController,private geolocation:Geolocation,private modal: ModalController,private userService:AuthService) {}
 
   
   
   ionViewDidLoad(){
+    console.log('Driver :'+localStorage.getItem('FCMToken'));
+    this.userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    if(this.userInfo!=null){
+      this.saveTokenToBackend(localStorage.getItem('FCMToken'));
+    }
     this.initMap();
     //get user location
   }
+  async saveTokenToBackend(token) {
+    let userID = this.userInfo.user.id;
+    //console.log(userID);
+    let body = { 
+      id: userID,
+      fcmToken: token
+    }
+    //console.log(body);
+    await this.userService.apiPatchUpdateUserFCM('/user',body).then((result)=>{
+      return result;
+    })
+  }
+
   getLocation(){
     return this.geolocation.getCurrentPosition();
   }

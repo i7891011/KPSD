@@ -43,12 +43,12 @@
       <ion-row>
         <ion-col col-2>
           <ion-avatar (click)="changeAvatar()">
-            <img src="http://158.108.207.4/delivery/public/images/profiles/{{userInfo.image}}">
+            <img src="http://158.108.207.4/delivery/public/images/profiles/{{userInfo.user.image}}">
           </ion-avatar>
         </ion-col>
         <ion-col col-7>
           <ion-row>
-            <div class="font-size24">{{ userInfo.name }}</div>
+            <div class="font-size24">{{ userInfo.user.name }}</div>
           </ion-row>
           <ion-row (click)="editProfile()">
             <div class="font-size14">แก้ไขโปรไฟล์</div>

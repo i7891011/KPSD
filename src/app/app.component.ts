@@ -23,30 +23,44 @@ export class MyApp {
     user = {} as User;
     userInfo: any;
     userType: any;
-    token: any;
     
   constructor(private platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, private push: Push, private firebase:Firebase,private alertCtrl: AlertController, private userService: AuthService) {
     this.platform.ready().then(() => {
+      //push notification
+      if (this.platform.is('android')) {
+        firebase.getToken().then(token=> {
+          console.log("FCM_Token android: "+token);
+          localStorage.setItem('FCMToken',token);
+          this.initializeUser();
+        }).catch(err=> console.log(err));
+        firebase.onNotificationOpen().subscribe(data=>{
+          if(data.wasTapped){
+            console.log("Received in background");
+          } else {
+            console.log("Received in foreground");
+          };
+          }, err=> console.log(err));
+      } 
+    
+      if (this.platform.is('ios')) {
+        firebase.getToken().then(token=> {
+          console.log("FCM_Token iOS: "+token);
+          localStorage.setItem('FCMToken',token);
+          this.initializeUser();
+        }).catch(err=> console.log(err));
+        this.firebase.grantPermission();
+        firebase.onNotificationOpen().subscribe(data=>{
+          if(data.wasTapped){
+            console.log("Received in background");
+          } else {
+            console.log("Received in foreground");
+          };
+        }, err=> console.log(err));
+      }
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       statusBar.styleLightContent();
       splashScreen.hide();
-      //push notification
-      if (this.platform.is('android')) {
-        this.firebase.getToken().then(token=> {
-          console.log("FCM_Token: "+token);
-          this.token = token;
-        }).catch(err=> console.log(err));
-      } 
-    
-      if (this.platform.is('ios')) {
-        this.firebase.getToken().then(token=> {
-          console.log("FCM_Token: "+token);
-          this.token = token;
-        }).catch(err=> console.log(err));
-        this.firebase.grantPermission();
-      }
-      this.initializeUser();
       // firebase.getToken().then(token => {
       //   console.log(token)
       //    //initialize user
@@ -60,11 +74,11 @@ export class MyApp {
     });
   }
 
-  initializeUser(){
+  async initializeUser(){
     this.userInfo = JSON.parse(localStorage.getItem('userInfo'));
       if(this.userInfo!=null){
-        this.syncUserType();
-        this.saveTokenToBackend(this.token); 
+        await this.syncUserType();
+        // this.saveTokenToBackend(this.token); 
         this.userType = JSON.parse(localStorage.getItem('userType'));
         if(this.userType!= null){
           this.setRootPage();
@@ -97,22 +111,22 @@ export class MyApp {
     await this.userService.apiSyncUserType();
   }
   //fcm
-  async getToken() {
-    if (this.platform.is('android')) {
-      this.firebase.getToken().then(token=> console.log("FCM_Token: "+token)).catch(err=> console.log(err));
-    } 
+  // async getToken() {
+  //   if (this.platform.is('android')) {
+  //     this.firebase.getToken().then(token=> console.log("FCM_Token: "+token)).catch(err=> console.log(err));
+  //   } 
   
-    if (this.platform.is('ios')) {
-      this.firebase.getToken().then(token=> console.log("FCM_Token: "+token)).catch(err=> console.log(err));
-      this.firebase.grantPermission();
-    } 
-    //return token;
-    console.log('This.token in getToken func. '+this.token);
-    await this.initializeUser();
-    if(this.userInfo != null){
-      return this.saveTokenToBackend(this.token);
-    }
-  }
+  //   if (this.platform.is('ios')) {
+  //     this.firebase.getToken().then(token=> console.log("FCM_Token: "+token)).catch(err=> console.log(err));
+  //     this.firebase.grantPermission();
+  //   } 
+  //   //return token;
+  //   console.log('This.token in getToken func. '+this.token);
+  //   await this.initializeUser();
+  //   if(this.userInfo != null){
+  //     return this.saveTokenToBackend(this.token);
+  //   }
+  // }
 
   // pushSetup(){
   //   const options: PushOptions = {
@@ -143,28 +157,21 @@ export class MyApp {
   //   });
    
   //   pushObject.on('registration').subscribe((registration: any) => {
-  //     console.log('Device registered', registration)
-  //     let token=registration.registrationId;
-  //     console.log('FCM registration', token)
-  //     console.log('UserInfo: ID ', this.userInfo.id)
-  //     if(this.userInfo!=null){
-  //       return this.saveTokenToBackend(token);
-  //     }
   //   });
    
   //   pushObject.on('error').subscribe(error => console.error('Error with Push plugin', error));
    
   // }
 
-  async saveTokenToBackend(token) {
-    let body = { 
-      id: this.userInfo.id,
-      fcmToken: token
-    }
-    await this.userService.apiPatchUpdateUserFCM('/user',body).then((result)=>{
-      return result;
-    })
-  }
+  // async saveTokenToBackend(token) {
+  //   let body = { 
+  //     id: this.userInfo.id,
+  //     fcmToken: token
+  //   }
+  //   await this.userService.apiPatchUpdateUserFCM('/user',body).then((result)=>{
+  //     return result;
+  //   })
+  // }
 
   async presentAlertConfirm(title:string,message:any) {
     const alert = await this.alertCtrl.create({
